@@ -1,5 +1,6 @@
 package com.example.billeteradigital.Controller
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.widget.EditText
 import com.example.billeteradigital.R
 
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.billeteradigital.api.ApiService
 import com.example.billeteradigital.SigninRequest
 import com.example.billeteradigital.SigninResponse
@@ -30,10 +32,8 @@ class Login : AppCompatActivity() {
         val login: Button = findViewById(R.id.login);
         login.setOnClickListener {
 
-            val i = Intent(this@Login, Home::class.java)
-            startActivity(i)
 
-            /*
+
             val email = edtEmail.text.toString().trim();
             val pasword = edtPassword.text.toString().trim();
 
@@ -44,20 +44,21 @@ class Login : AppCompatActivity() {
                 edtEmail.error ="Email error"
                 edtEmail.requestFocus();
                 return@setOnClickListener
+            }else{
+                if(email.length < 8){
+                    edtEmail.error ="La contraseña debe ser de mínimo 8 caracteres"
+                    edtEmail.requestFocus();
+                    return@setOnClickListener
+                }else{
+                    if (pasword.isEmpty()){
+                        edtPassword.error ="edtPassword error"
+                        edtPassword.requestFocus();
+                        return@setOnClickListener
+                    }else{
+                        post(email, pasword);
+                    }
+                }
             }
-
-            if (pasword.isEmpty()){
-                edtPassword.error ="edtPassword error"
-                edtPassword.requestFocus();
-                return@setOnClickListener
-            }
-
-
-
-           post(email, pasword);
-
-             */
-
         }
 
         val moreInfo: Button = findViewById(R.id.moreInfo);
@@ -91,6 +92,17 @@ class Login : AppCompatActivity() {
 
 
                 }else{
+
+                    val builder = AlertDialog.Builder(this@Login)
+                    builder.setMessage(response.body()!!.message)
+                        .setPositiveButton(R.string.aceptar,
+                            DialogInterface.OnClickListener { dialog, id ->
+                                // FIRE ZE MISSILES!
+                            })
+
+                    // Create the AlertDialog object and return it
+                    builder.create()
+
                     Toast.makeText(applicationContext, response.body()!!.message, Toast.LENGTH_LONG).show()
                 }
             }

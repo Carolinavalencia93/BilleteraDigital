@@ -11,4 +11,5 @@
     <string name="login_failed">"Login failed"</string>
     <string name="login">ingresar</string>
     <string name="moreInfo">Ver más información</string>
+    <string name="aceptar">Aceptar</string>
 </resources>
